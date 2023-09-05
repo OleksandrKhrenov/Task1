@@ -1,68 +1,20 @@
-﻿namespace Task1
+﻿using System;
+using System.Collections.Generic;
+using Task1;
+
+class Program
 {
-    class Opponent
+    public static void Main(string[] args)
     {
-        private string name;
-        private int maxHP;
-        private int currentHP;
-        private List<IUsable> inventory;
+        Console.Write("Enter your name: ");
+        string playerName = Console.ReadLine();
 
-        public string Name
-        {
-            get => name; 
-            set => name = value;
-        }
+        Console.WriteLine("\nPlayer generated");
+        Random random = new Random();
+        int playerMaxHP = random.Next(100, 200);
+        int playerInventorySize = random.Next(10, 15);
 
-        public int CurrentHP
-        {
-            get => currentHP;
-            set => currentHP = value;
-        }
-
-        public int MaxHP
-        {
-            get => maxHP; 
-            set => maxHP = value; 
-        }
-
-        public IUsable GetItemFromInventory()
-        {
-            if (inventory.Count > 0)
-            {
-                IUsable item = inventory[0];
-                inventory.RemoveAt(0);
-                return item;
-            }
-            return null;
-        }
-
-        public virtual void ReceiveDamage(int trueDamage)
-        {
-            CurrentHP -= trueDamage;
-        }
-
-        public virtual void ReceiveHeal(int trueHeal)
-        {
-            CurrentHP += trueHeal;
-        }
-
-        public virtual void UseItem(Opponent opponent, IUsable item)
-        {
-            (string itemType, string itemName, int itemPower) = item.Use();
-            if (itemType == "Weapon") 
-            {
-                opponent.ReceiveDamage(itemPower);
-                Console.WriteLine();
-            }
-            else if (itemType == "Healing")
-            {
-
-            }
-            else
-            {
-                Console.WriteLine("Unknown item");
-            }
-        }
-
+        GameSession gameSession = new GameSession(playerName, playerMaxHP, playerInventorySize);
+        gameSession.PlayGame();
     }
 }
